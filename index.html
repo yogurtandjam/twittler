@@ -3,25 +3,88 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <link href="twittlerStyle.css" rel="stylesheet" type="text/css" />
   </head>
-  <body>
-    <script>
+  <header>
+    <h1>Twittler</h1>
+    <i id="twitter" class="pull-right fa fa-twitter text-primary">
+    </i>
+    <input class="input" type="text" placeholder="Write your own tweet!" id="tweet-input">
+    <button class="btn" id="write-tweet">Send it!</button>
+    <div id="tweetSent"></div>
+  </header>
+  <div>
+   <p> </p>
+  </div>
+  <body style = background-color:#F0F8FF>
+    <div class="mainArea">
+      <div class="loading" id="get-tweets">
+        <p>You have tweets waiting, click to load</p>
+      </div>
+      <section id="tweetArea"></section>
+      <script>
+        $(document).ready(function(){
+          var $getTweets = $('#get-tweets');
+          var $tweetArea = $('#tweetArea');
+          var $writeTweets = $('#write-tweet');
+          var $tweetInput = $('#tweet-input');
+          var $tweetSent = $('#tweetSent');
+          var $tweetUser = $('#user');
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+          function userFilter(users){
+            console.log('test');
+          }
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+          ($getTweets).click(function(){
+              $tweetArea.html('');
+              var index = streams.home.length - 1;
+              while(index >= 0){
+                var tweet = streams.home[index];
+                var $tweet = $('<div class="tweet"><p>' + tweet.message + '</p><p>' + tweet.created_at + '</p><a id="user">@' + tweet.user + '</a></div>');
+                $tweet.appendTo($tweetArea);
+                index -= 1;
+              }
+          });
+          ($writeTweets).click(function(){
+            $tweetSent.html('');
+            if($(".input").val().length > 0){
+              var tweet = {};
+              tweet.user = 'guest';
+              tweet.message = $(".input").val();
+              tweet.created_at = new Date();
+              streams.home.push(tweet)
+              $(".input").val("");
+              $('#tweetSent').append('Tweet Sent!');
+            }
+        });
+          ($tweetInput).keypress(function(event){
+            var isItEnter =   event.which || event.keyCode;
+            if(isItEnter === 13 && $(".input").val().length > 0){
+              $tweetSent.html('');
+              var tweet = {};
+              tweet.user = 'guest';
+              tweet.message = $(".input").val();
+              tweet.created_at = new Date();
+              streams.home.push(tweet)
+              $(".input").val("");
+              $('#tweetSent').append('Tweet Sent!');
+            }
+          });
 
+          $tweetArea.html('');
+          var index = streams.home.length - 1;
+          while(index >= 0){
+            var tweet = streams.home[index];
+            var $tweet = $('<div class="tweet"><p>' + tweet.message + '</p><p>' + tweet.created_at + '</p><a id="user">@' + tweet.user + '</a></div>');
+            $tweet.appendTo($tweetArea);
+            index -= 1;
+          }
+
+
+        var el = document.getElementById("#user");
+        el.addEventListener("click", userFilter, false);
       });
-
-    </script>
+      </script>
+    </div>
   </body>
 </html>
