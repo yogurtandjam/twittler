@@ -31,16 +31,16 @@
           var $tweetSent = $('#tweetSent');
           var $tweetUser = $('#user');
 
-          function userFilter(users){
-            console.log('test');
-          }
-
           ($getTweets).click(function(){
               $tweetArea.html('');
               var index = streams.home.length - 1;
               while(index >= 0){
                 var tweet = streams.home[index];
-                var $tweet = $('<div class="tweet"><p>' + tweet.message + '</p><p>' + tweet.created_at + '</p><a id="user">@' + tweet.user + '</a></div>');
+                var $tweet = $('<div class="tweet"><p>' + tweet.message + '</p><p>' + tweet.created_at + '</p>');
+                var $user = $('<a></a>');
+                $user.text('@' + tweet.user);
+                $user.addClass('user');
+                $user.appendTo($tweet);
                 $tweet.appendTo($tweetArea);
                 index -= 1;
               }
@@ -56,7 +56,7 @@
               $(".input").val("");
               $('#tweetSent').append('Tweet Sent!');
             }
-        });
+          });
           ($tweetInput).keypress(function(event){
             var isItEnter =   event.which || event.keyCode;
             if(isItEnter === 13 && $(".input").val().length > 0){
@@ -75,14 +75,30 @@
           var index = streams.home.length - 1;
           while(index >= 0){
             var tweet = streams.home[index];
-            var $tweet = $('<div class="tweet"><p>' + tweet.message + '</p><p>' + tweet.created_at + '</p><a id="user">@' + tweet.user + '</a></div>');
+            var $tweet = $('<div class="tweet"><p>' + tweet.message + '</p><p>' + tweet.created_at + '</p>');
+            var $user = $('<a></a>');
+            $user.text('@' + tweet.user);
+            $user.addClass('user');
+            $user.appendTo($tweet);
             $tweet.appendTo($tweetArea);
             index -= 1;
           }
-
-
-        var el = document.getElementById("#user");
-        el.addEventListener("click", userFilter, false);
+        $('.user').on('click',function(users){
+          $tweetArea.html('');
+          $tweetArea.html('');
+          var index = streams.home.length - 1;
+          while(index >= 0){
+            var tweet = streams.home[index];
+            if('@' + tweet.user == users.toElement.innerText){
+              var $tweet = $('<div class="tweet"><p>' + tweet.message + '</p><p>' + tweet.created_at + '</p><a id="user">@' + tweet.user + '</a></div>');
+              console.log(tweet.user, users.toElement.innerText)
+              $tweet.appendTo($tweetArea);
+              index -= 1;
+            }
+            console.log(tweet.user, users.toElement.innerText)
+            index -= 1;
+          }
+        });
       });
       </script>
     </div>
