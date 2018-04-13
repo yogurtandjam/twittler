@@ -29,7 +29,7 @@
           var $writeTweets = $('#write-tweet');
           var $tweetInput = $('#tweet-input');
           var $tweetSent = $('#tweetSent');
-          var $tweetUser = $('#user');
+          var $tweetUser = $('.user');
 
           ($getTweets).click(function(){
               $tweetArea.html('');
@@ -37,13 +37,29 @@
               while(index >= 0){
                 var tweet = streams.home[index];
                 var $tweet = $('<div class="tweet"><p>' + tweet.message + '</p><p>' + tweet.created_at + '</p>');
-                var $user = $('<a></a>');
+                var $user = $('<a><b></b></a>');
                 $user.text('@' + tweet.user);
                 $user.addClass('user');
                 $user.appendTo($tweet);
                 $tweet.appendTo($tweetArea);
                 index -= 1;
               }
+              $('.user').on('click',function(users){
+                $tweetArea.html('');
+                var index = streams.home.length - 1;
+                while(index >= 0){
+                  var tweet = streams.home[index];
+                  if('@' + tweet.user == users.toElement.innerText){
+                    var $tweet = $('<div class="tweet"><p>' + tweet.message + '</p><p>' + tweet.created_at + '</p><a id="user">@' + tweet.user + '</a></div>');
+                    console.log(tweet.user, users.toElement.innerText)
+                    $tweet.appendTo($tweetArea);
+                    index -= 1;
+                  }
+                  console.log(tweet.user, users.toElement.innerText)
+                  index -= 1;
+                }
+              });
+
           });
           ($writeTweets).click(function(){
             $tweetSent.html('');
@@ -70,7 +86,6 @@
               $('#tweetSent').append('Tweet Sent!');
             }
           });
-
           $tweetArea.html('');
           var index = streams.home.length - 1;
           while(index >= 0){
@@ -84,7 +99,6 @@
             index -= 1;
           }
         $('.user').on('click',function(users){
-          $tweetArea.html('');
           $tweetArea.html('');
           var index = streams.home.length - 1;
           while(index >= 0){
